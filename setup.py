@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/leockl/helstrom-quantum-centroid-classifier",
-    keyword=["machine learning", "classification", "classifier", "Helstrom", "helstrom", "Quantum", "quantum", "Quantum-inspired", "quantum-inspired"],
+    keyword=["machine learning", "classification", "classifier", "Helstrom", "helstrom", "Quantum", "quantum", "Quantum-inspired", "quantum-inspired", "djsjdkhskdjskjdhskjdhskjdhskjdhskjdhskjdhksdjhksjdhskjdhskjdhskjdhskjdhskjdhskjdhksjdhkjsdhksjdhksjdhskjdhskjdhskdj"]
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
