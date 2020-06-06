@@ -28,12 +28,12 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 
 | Rank | Classifier                    | Average Success Rate (%) |
 |:----:| ----------------------------- |:------------------------:|
-| 1    | HelstromQuantumCentroid4      | 72.8                     |
+| 1    | HelstromQuantumCentroid4      | 72.80                    |
 | 2    | HelstromQuantumCentroid3      | 65.13                    |
-| 3    | GaussianNB                    | 58                       |
+| 3    | GaussianNB                    | 58.00                    |
 | 4    | HelstromQuantumCentroid2      | 57.07                    |
-| 5    | HelstromQuantumCentroid1      | 56.6                     |
-| 5    | QuadraticDiscriminantAnalysis | 56.6                     |
+| 5    | HelstromQuantumCentroid1      | 56.60                    |
+| 5    | QuadraticDiscriminantAnalysis | 56.60                    |
 | 6    | GradientBoostingClassifier    | 52.73                    |
 | 7    | ExtraTreesClassifier          | 51.93                    |
 | 8    | KNeighborsClassifier          | 51.47                    |
@@ -41,9 +41,9 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 | 10   | RandomForestClassifier        | 45.87                    |
 | 11   | QuantumNearestMeanCentroid    | 43.93                    |
 | 12   | AdaBoostClassifier            | 42.93                    |
-| 13   | LinearDiscriminantAnalysis    | 42                       |
-| 14   | LogisticRegression            | 36.4                     |
-| 15   | BernoulliNB                   | 17.4                     |
+| 13   | LinearDiscriminantAnalysis    | 42.00                    |
+| 14   | LogisticRegression            | 36.40                    |
+| 15   | BernoulliNB                   | 17.40                    |
 
 Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets.
 
