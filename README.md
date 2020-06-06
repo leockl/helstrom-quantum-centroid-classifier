@@ -20,7 +20,7 @@ This Python package includes the option to vary four hyperparameters which are u
 * There is an option to rescale the dataset.
 * There is an option to choose the number of copies to take for the quantum densities.
 * There are two options to choose how the classical dataset is encoded into quantum densities: *inverse of the standard stereographic projection* or *amplitude* encoding method.
-* There are two options to assign class weights to the quantum Helstrom observable terms: *equiprobable* and *weighted*.
+* There are two options to assign class weights to the quantum Helstrom observable terms: *equiprobable* or *weighted*.
 
 These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
 
