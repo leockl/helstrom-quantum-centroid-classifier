@@ -16,9 +16,13 @@ The HQC classifier is based on research undertaken by Giuseppe Sergioli, Roberto
     Sergioli G, Giuntini R, Freytes H (2019) A new quantum approach to binary classification. PLoS ONE 14(5): e0216224.
     https://doi.org/10.1371/journal.pone.0216224
 
-In this Python package, the classical dataset is encoded into quantum densities using the *inverse of the standard stereographic projection* encoding method. 
+This Python package includes the option to vary four hyperparameters which are used to optimize the performance of the HQC classifier:
+* There is an option to rescale the dataset.
+* There is an option to choose the number of copies to take for the quantum densities.
+* There are two possible options to choose how the classical dataset is encoded into quantum densities: *inverse of the standard stereographic projection* or *amplitude* encoding method.
+* There are two possible options to assign class weights to the quantum Helstrom observable terms: *equiprobable* and *weighted*.
 
-This Python package includes the option to vary two parameters that are used to optimize the performance of the HQC classifier. First, there is an option to rescale the dataset. Second, there is an option to choose the number of copies to take for the quantum densities. These two parameters are used in combination together to fine tune and optimize the accuracy of the HQC classifier to a given dataset.
+These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
 
 It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets. A summary of the performances of the different classifiers examined are shown in the table below:
 
@@ -31,7 +35,7 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 | 5    | HelstromQuantumCentroid1      | 56.6                     |
 | 5    | QuadraticDiscriminantAnalysis | 56.6                     |
 | 6    | GradientBoostingClassifier    | 52.73                    |
-| 7    | ExtreTreesClassifier          | 51.93                    |
+| 7    | ExtraTreesClassifier          | 51.93                    |
 | 8    | KNeighborsClassifier          | 51.47                    |
 | 9    | NearestCentroid               | 49.13                    |
 | 10   | RandomForestClassifier        | 45.87                    |
@@ -41,9 +45,9 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 | 14   | LogisticRegression            | 36.4                     |
 | 15   | BernoulliNB                   | 17.4                     |
 
-Average success rate is the average of the number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets.
+Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets.
 
-HelstromQuantumCentroidn is the HQC classifier corresponding to the n number of copies to take for the quantum densities.
+HelstromQuantumCentroidn is the HQC classifier corresponding to the n number of copies taken for the quantum densities.
 
 ## Source Code
 The Python package's source code for the HQC classifier is available here: 
