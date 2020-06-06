@@ -19,10 +19,12 @@ The HQC classifier is based on research undertaken by Giuseppe Sergioli, Roberto
 This Python package includes the option to vary four hyperparameters which are used to optimize the performance of the HQC classifier:
 * There is an option to rescale the dataset.
 * There is an option to choose the number of copies to take for the quantum densities.
-* There are two possible options to choose how the classical dataset is encoded into quantum densities: *inverse of the standard stereographic projection* or *amplitude* encoding method.
-* There are two possible options to assign class weights to the quantum Helstrom observable terms: *equiprobable* and *weighted*.
+* There are two options to choose how the classical dataset is encoded into quantum densities: *inverse of the standard stereographic projection* or *amplitude* encoding method.
+* There are two options to assign class weights to the quantum Helstrom observable terms: *equiprobable* and *weighted*.
 
 These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
+
+The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance.
 
 It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets. A summary of the performances of the different classifiers examined are shown in the table below:
 
