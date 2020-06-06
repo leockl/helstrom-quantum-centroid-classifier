@@ -18,7 +18,7 @@ class hqc(BaseEstimator, ClassifierMixin):
         the n-fold Kronecker tensor product for each quantum density.
     encoding : str, default = 'amplit'
         The encoding method used to encode vectors into quantum densities. Possible values:
-        'amplit','stereo'. 'amplit' means using the amplitude encoding method. 'stereo' means 
+        'amplit', 'stereo'. 'amplit' means using the amplitude encoding method. 'stereo' means 
         using the inverse of the standard stereographic projection encoding method. Default set 
         to 'amplit'.
     class_wgt : str, default = 'equi'
