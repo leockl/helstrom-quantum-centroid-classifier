@@ -53,7 +53,7 @@ HelstromQuantumCentroidn is the HQC classifier corresponding to the n number of 
 
 ## Source Code
 The Python package's source code for the HQC classifier is available here: 
-https://github.com/leockl/helstrom-quantum-centroid-classifier/blob/master/HQC/HQC.py
+https://github.com/leockl/helstrom-quantum-centroid-classifier/blob/master/hqc/hqc.py
 
 ## Documentation
 The documentation, including how to install the Python package, how to use the Python package and how the HQC classifier algorithm works, are available here: 
