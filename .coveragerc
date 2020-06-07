@@ -2,8 +2,8 @@
 
 [run]
 branch = True
-source = HQC
-include = */HQC/*
+source = hqc
+include = */hqc/*
 omit =
     */setup.py
 
