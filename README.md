@@ -26,7 +26,7 @@ These hyperparameters are used in combination together to hypertune and optimize
 
 The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance.
 
-It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets. A summary of the performances of the different classifiers examined are shown in the table below:
+It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets, in particular when the number of copies hyperparameter is increased. A summary of the performances of the different classifiers examined are shown in the table below:
 
 | Rank | Classifier                    | Average Success Rate (%) |
 |:----:| ----------------------------- |:------------------------:|
