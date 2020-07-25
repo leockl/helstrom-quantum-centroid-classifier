@@ -179,4 +179,4 @@ Below is a general step-by-step guide to the algorithm behind the HQC classifier
 
 23. Steps 21 and 22 are repeated to calculate the trace values corresponding to binary class 1, using parallelization. The trace values corresponding to binary class 0 and class 1 are placed in a trace matrix.
 
-#. Finally, the algorithm determines the predicted binary class 0 or 1 by comparing the trace values in the trace matrix. If the trace values in the first column of the trace matrix is higher than (or the same as) the trace values in the second column, the predicted binary class is 0, otherwise the predicted binary class is 1.
+24. Finally, the algorithm determines the predicted binary class 0 or 1 by comparing the trace values in the trace matrix. If the trace values in the first column of the trace matrix is higher than (or the same as) the trace values in the second column, the predicted binary class is 0, otherwise the predicted binary class is 1.
