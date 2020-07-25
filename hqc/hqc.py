@@ -5,7 +5,7 @@ from sklearn.utils.multiclass import check_classification_targets
 from sklearn.preprocessing import normalize
 from joblib import Parallel, delayed
 
-class hqc(BaseEstimator, ClassifierMixin):
+class HQC(BaseEstimator, ClassifierMixin):
     """The Helstrom Quantum Centroid (HQC) classifier is a quantum-inspired supervised 
     classification approach for data with binary classes (ie. data with 2 classes only).
                          
@@ -13,14 +13,14 @@ class hqc(BaseEstimator, ClassifierMixin):
     ----------
     rescale : int or float, default = 1
         The dataset rescaling factor. A parameter used for rescaling the dataset. 
-    n_copies : int, default = 1
-        The number of copies to take for each quantum density. This is equivalent to taking 
-        the n-fold Kronecker tensor product for each quantum density.
     encoding : str, default = 'amplit'
         The encoding method used to encode vectors into quantum densities. Possible values:
         'amplit', 'stereo'. 'amplit' means using the amplitude encoding method. 'stereo' means 
         using the inverse of the standard stereographic projection encoding method. Default set 
         to 'amplit'.
+    n_copies : int, default = 1
+        The number of copies to take for each quantum density. This is equivalent to taking 
+        the n-fold Kronecker tensor product for each quantum density.
     class_wgt : str, default = 'equi'
         The class weights assigned to the Quantum Helstrom observable terms. Possible values: 
         'equi', 'weighted'. 'equi' means assigning equal weights of 1/2 (equiprobable) to the
@@ -43,11 +43,11 @@ class hqc(BaseEstimator, ClassifierMixin):
     ----------
     classes_ : ndarray, shape (2,)
         Sorted binary classes.
-    centroid_ : ndarray, shape (2, n_features + 1, n_features + 1)
+    centroids_ : ndarray, shape (2, n_features + 1, n_features + 1)
         Quantum Centroids for class with index 0 and 1 respectively.
-    q_hels_obs_ : ndarray, shape (n_features + 1, n_features + 1)
+    hels_obs_ : ndarray, shape (n_features + 1, n_features + 1)
         Quantum Helstrom observable.
-    proj_sum_ : tuple, shape (2, n_features + 1, n_features + 1)
+    proj_sums_ : tuple, shape (2, n_features + 1, n_features + 1)
         Sum of the projectors of the Quantum Helstrom observable's eigenvectors, which has
         corresponding positive and negative eigenvalues respectively.
     hels_bound_ : float
@@ -131,7 +131,7 @@ class hqc(BaseEstimator, ClassifierMixin):
             
         # Function to calculate terms in the Quantum Centroids and quantum Helstrom 
         # observable for each class
-        def centroid_terms_func(i):
+        def centroids_terms_func(i):
             # Determine rows (samples) in X' belonging to either class
             X_prime_class = X_prime[y_class_index == i]
             
@@ -155,10 +155,10 @@ class hqc(BaseEstimator, ClassifierMixin):
                 # Number of rows/columns in density matrix
                 density_nrow_ncol = (n + 1)**self.n_copies
             
-                # Initialize arrays density_sum, centroid and q_hels_obs_terms
+                # Initialize arrays density_sum, centroid and hels_obs_terms
                 density_sum = np.zeros((density_nrow_ncol, density_nrow_ncol))
                 centroid = density_sum
-                q_hels_obs_terms = density_sum
+                hels_obs_terms = density_sum
                 for k in range(m_class_split):
                     # Encode vectors into quantum densities
                     X_prime_class_split_each_row = X_prime_class_split_jth[k, :]
@@ -187,25 +187,25 @@ class hqc(BaseEstimator, ClassifierMixin):
                     if self.class_wgt not in ['equi', 'weighted']:
                         raise ValueError('class_wgt should be "equi" or "weighted"')
                     elif self.class_wgt == 'equi':
-                        q_hels_obs_terms = 0.5*centroid
+                        hels_obs_terms = 0.5*centroid
                     else:
-                        q_hels_obs_terms = (1 / m)*density_sum                      
-                return m_class_split, centroid, q_hels_obs_terms        
+                        hels_obs_terms = (1 / m)*density_sum                      
+                return m_class_split, centroid, hels_obs_terms        
             return np.sum(Parallel(n_jobs = self.n_jobs) \
                          (delayed(X_prime_class_split_func)(j) for j in range(self.n_splits)), axis = 0)
             
         # Calculate Quantum Centroids and terms in the quantum Helstrom observable for each class
-        centroid_terms = np.array(Parallel(n_jobs = self.n_jobs) \
-                                          (delayed(centroid_terms_func)(i) for i in range(2)))
+        centroids_terms = np.array(Parallel(n_jobs = self.n_jobs) \
+                                          (delayed(centroids_terms_func)(i) for i in range(2)))
         
         # Determine Quantum Centroids
-        self.centroid_ = centroid_terms[:, 1]
+        self.centroids_ = centroids_terms[:, 1]
            
         # Calculate quantum Helstrom observable
-        self.q_hels_obs_ = centroid_terms[0, 2] - centroid_terms[1, 2]     
+        self.hels_obs_ = centroids_terms[0, 2] - centroids_terms[1, 2]     
         
         # Calculate eigenvalues w and eigenvectors v of the quantum Helstrom observable
-        w, v = np.linalg.eigh(self.q_hels_obs_)
+        w, v = np.linalg.eigh(self.hels_obs_)
         
         # Length of w
         len_w = len(w)
@@ -237,26 +237,26 @@ class hqc(BaseEstimator, ClassifierMixin):
             # Function to calculate sum of the projectors corresponding to positive and negative
             # eigenvalues respectively, per subset split
             def eigvec_class_split_func(j):
-                # Initialize array proj_sum_split
-                proj_sum_split = np.zeros_like(self.q_hels_obs_)
+                # Initialize array proj_sums_split
+                proj_sums_split = np.zeros_like(self.hels_obs_)
                 for k in eigvec_class_split[j]:
                     # Calculate sum of the projectors corresponding to positive and negative
                     # eigenvalues respectively, per subset split
-                    proj_sum_split = proj_sum_split + np.dot(k.reshape(-1, 1), k.reshape(1, -1))
-                return proj_sum_split        
+                    proj_sums_split = proj_sums_split + np.dot(k.reshape(-1, 1), k.reshape(1, -1))
+                return proj_sums_split        
             return np.sum(Parallel(n_jobs = self.n_jobs) \
                          (delayed(eigvec_class_split_func)(j) for j in range(self.n_splits)), axis = 0)
         
         # Calculate sum of the projectors corresponding to positive and negative eigenvalues
         # respectively
-        self.proj_sum_ = Parallel(n_jobs = self.n_jobs) \
+        self.proj_sums_ = Parallel(n_jobs = self.n_jobs) \
                          (delayed(sum_proj_func)(i) for i in range(2))    
                        
         # Calculate Helstrom bound
-        self.hels_bound_ = (centroid_terms[0, 0] / m)*np.einsum('ij,ji->', self.centroid_[0], 
-                                                                self.proj_sum_[0]) \
-                           + (centroid_terms[1, 0] / m)*np.einsum('ij,ji->', self.centroid_[1], 
-                                                                  self.proj_sum_[1])
+        self.hels_bound_ = (centroids_terms[0, 0] / m)*np.einsum('ij,ji->', self.centroids_[0], 
+                                                                self.proj_sums_[0]) \
+                           + (centroids_terms[1, 0] / m)*np.einsum('ij,ji->', self.centroids_[1], 
+                                                                  self.proj_sums_[1])
         return self
         
     
@@ -279,7 +279,7 @@ class hqc(BaseEstimator, ClassifierMixin):
             of float.
         """
         # Check if fit had been called
-        check_is_fitted(self, ['proj_sum_'])
+        check_is_fitted(self, ['proj_sums_'])
 
         # Input validation
         X = check_array(X)
@@ -343,7 +343,7 @@ class hqc(BaseEstimator, ClassifierMixin):
                         
                     # Calculate trace of the dot product of density of each row and sum of projectors 
                     # with corresponding positive and negative eigenvalues respectively    
-                    trace_class_split[k] = np.einsum('ij,ji->', density_each_row, self.proj_sum_[i])
+                    trace_class_split[k] = np.einsum('ij,ji->', density_each_row, self.proj_sums_[i])
                 return trace_class_split
             
             # Calculate trace values for each class, per subset split
