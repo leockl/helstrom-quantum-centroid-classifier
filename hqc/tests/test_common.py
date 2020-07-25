@@ -2,7 +2,7 @@ import pytest
 
 from sklearn.utils.estimator_checks import check_estimator
 
-from hqc import hqc
+from hqc import HQC
 
 
 @pytest.mark.parametrize(
