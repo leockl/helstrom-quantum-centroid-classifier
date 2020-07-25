@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 
 X = [[0, 0], [1, 1]]
 y = [0, 1]
-clf = hqc.hqc()   # Using default hyperparameter values
+clf = hqc.HQC()   # Using default hyperparameter values
 clf.fit(X, y)
 
 rng = np.random.RandomState(13)
