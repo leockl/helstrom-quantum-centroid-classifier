@@ -24,7 +24,7 @@ This Python package includes the option to vary four hyperparameters which are u
 
 These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
 
-The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance.
+The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance. Parallelization is performed over the two classes and subsets or batches.
 
 It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets, in particular when the hyperparameter, *number of copies*, increases. A summary of the performances of the different classifiers examined are shown in the table below:
 
