@@ -6,7 +6,7 @@ from hqc import HQC
 
 
 @pytest.mark.parametrize(
-    "Estimator", [hqc]
+    "Estimator", [HQC]
 )
 def test_all_estimators(Estimator):
     return check_estimator(Estimator)
