@@ -27,8 +27,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Helstrom Quantum Centroid Classifier'
-copyright = '2020, Leo Chow, Giuseppe Sergioli, Roberto Giuntini'
-author = 'Leo Chow, Giuseppe Sergioli, Roberto Giuntini'
+copyright = '2020, Leo Chow, Giuseppe Sergioli, Roberto Giuntini.'
+author = 'Leo Chow, Giuseppe Sergioli, Roberto Giuntini.'
 
 # The master toctree document.
 master_doc = 'index'
