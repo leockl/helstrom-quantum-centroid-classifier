@@ -1,1 +1,1 @@
-from .hqc import hqc
+from .hqc import HQC
