@@ -49,9 +49,9 @@ Then specify values for the four hyperparameters for the HQC classifier:
 
 1. the rescaling factor, *rescale*.
 
-2. the number of copies to take for each quantum density, *n_copies*. 
+2. the encoding method, *encoding*.
 
-3. the encoding method, *encoding*.
+3. the number of copies to take for each quantum density, *n_copies*. 
 
 4. the class weights assigned to the quantum Helstrom observable terms, *class_wgt*.
 
@@ -61,27 +61,27 @@ If you wish to perform parallel computing, you can also specify values for the f
 
 2. the number of subset or batches splits performed on the datasets, *n_splits*.
 
-Say, *rescale* = 1.5, *n_copies* = 2, *encoding* = stereo, *class_wgt* = weighted, *n_jobs* = 4 and *n_splits* = 2, the HQC classifier would look like:
+Say, *rescale* = 1.5, *encoding* = stereo, *n_copies* = 2, *class_wgt* = weighted, *n_jobs* = 4 and *n_splits* = 2, the HQC classifier would look like:
 
 .. code:: python
 
-    hqc.hqc(rescale=1.5, n_copies=2, encoding='stereo', class_wgt='weighted', n_jobs=4, n_splits=2)
+    hqc.HQC(rescale=1.5, encoding='stereo', n_copies=2, class_wgt='weighted', n_jobs=4, n_splits=2)
 
 If either *rescale*, *n_copies*, *n_jobs* and/or *n_splits* are not specified, they would default to 1. If *encoding* is not specified, it would default to amplit. If *class_wgt* is not specified, it would default to equi. The HQC classifier would look like:
 
 .. code:: python
 
-    hqc.hqc()
+    hqc.HQC()
 
-where *rescale* = 1, *n_copies* = 1, *encoding* = 'amplit', *class_wgt* = 'equi', *n_jobs* = 1 and *n_splits* = 1.
+where *rescale* = 1, *encoding* = 'amplit', *n_copies* = 1, *class_wgt* = 'equi', *n_jobs* = 1 and *n_splits* = 1.
 
-From here on, we will be using *rescale* = 1.5, *n_copies* = 2, *encoding* = stereo, *class_wgt* = weighted, *n_jobs* = 4 and *n_splits* = 2 as an example. To get your HQC classification model, fit the features matrix X and binary target vector y, as below:
+From here on, we will be using *rescale* = 1.5, *encoding* = stereo, *n_copies* = 2, *class_wgt* = weighted, *n_jobs* = 4 and *n_splits* = 2 as an example. To get your HQC classification model, fit the features matrix X and binary target vector y, as below:
 
 .. code:: python
 
-    model = hqc.hqc(rescale=1.5, n_copies=2, encoding='stereo', class_wgt='weighted', n_jobs=4, n_splits=2).fit(X, y)
+    model = hqc.HQC(rescale=1.5, encoding='stereo', n_copies=2, class_wgt='weighted', n_jobs=4, n_splits=2).fit(X, y)
 
-Tip: If the feature matrix X contains non-numerical categorical features, these features could be encoded into 0s and 1s using the one-hot encoding method. The binary target vector y can be a feature of any datatype (numerical or non-numerical) as long as it has only two classes.
+Tip: If the feature matrix X contains non-numerical categorical features, these features could first be encoded into numerical 0s and 1s using the one-hot encoding method. The binary target vector y can be a numerical feature of any numbers as long as it has only two classes.
 
 The fitted attributes of your model can be obtained by calling the following methods:
 
@@ -89,9 +89,9 @@ The fitted attributes of your model can be obtained by calling the following met
 Method                    Fitted Attribute
 =======================   ============================================================================================================
 model.classes_            Gives the sorted binary classes.
-model.centroid_           Gives the Quantum Centroids for the two classes, with index 0 and 1 respectively.
-model.q_hels_obs_         Gives the Quantum Helstrom observable.
-model.proj_sum_           Gives the sum of the projectors of the Quantum Helstrom observable's eigenvectors, which has corresponding positive and negative eigenvalues respectively.
+model.centroids_          Gives the Quantum Centroids for the two classes, with index 0 and 1 respectively.
+model.hels_obs_           Gives the Quantum Helstrom observable.
+model.proj_sums_          Gives the sum of the projectors of the Quantum Helstrom observable's eigenvectors, which has corresponding positive and negative eigenvalues respectively.
 model.hels_bound_         Gives the Helstrom bound.
 =======================   ============================================================================================================
 
@@ -113,15 +113,15 @@ You can obtain the accuracy score by using:
 
     model.score(X, y)
 
-You can use scikit-learn's GridSearchCV tool to do an exhaustive search to find the optimal values for the hyperparameters *rescale*, *n_copies*, *encoding* and *class_wgt*. For eg.:
+You can use scikit-learn's GridSearchCV tool to do an exhaustive search to find the optimal values for the hyperparameters *rescale*, *encoding*, *n_copies* and *class_wgt*. For eg.:
 
 .. code:: python
 
     from sklearn.model_selection import GridSearchCV
     import pandas as pd
 
-    param_grid = {'rescale':[0.5, 1, 1.5], 'n_copies':[1, 2], 'encoding':['amplit', 'stereo'], 'class_wgt':['equi', 'weighted']}
-    models = GridSearchCV(hqc.hqc(), param_grid).fit(X, y)
+    param_grid = {'rescale':[0.5, 1, 1.5], 'encoding':['amplit', 'stereo'], 'n_copies':[1, 2], 'class_wgt':['equi', 'weighted']}
+    models = GridSearchCV(hqc.HQC(), param_grid).fit(X, y)
 
     # To ouput a dataframe table of all the models specified in param_grid
     pd.DataFrame(models.cv_results_)
@@ -131,7 +131,7 @@ More information about scikit-learn's GridSearchCV tool can be found `here <http
 How does the HQC classifier algorithm works
 -------------------------------------------
 
-Below is a general step-by-step guide to the algorithm behind the HQC classifier. The source code can be found in this `link <https://github.com/leockl/helstrom-quantum-centroid-classifier/blob/master/HQC/HQC.py>`_.
+Below is a general step-by-step guide to the algorithm behind the HQC classifier. The source code can be found in this `link <https://github.com/leockl/helstrom-quantum-centroid-classifier/blob/master/hqc/hqc.py>`_.
 
 1. First the algorithm perform checks on the features matrix X and binary target vector y, such as checking if X and y have the same number of rows (samples/observations) and y is of a categorical type variable.
 
@@ -151,7 +151,7 @@ Below is a general step-by-step guide to the algorithm behind the HQC classifier
 
 9. For X' with binary class 0, the algorithm first determines and then calculates the number of rows or samples in X' belonging to this class. The algorithm then splits this dataset belonging to this class into subsets or batches according to the number of splits specified by the user. 
 
-10. For each subset or batch, the algorithm then calculates the terms in the Quantum Centroids and quantum Helstrom observable by combining these steps: first creating a counter to identify each subset or batch and then calculating the number of rows or samples in this subset or batch. The algorithm then determines the number of rows, which is equivalent to the number of columns of the density_sum, centroid and q_hels_obs_terms arrays (since they are symmetric matrices) and initializes these arrays. Next, the algorithm calculates the quantum densities for each row (sample/observation), then calculate the *n_copies* or the n-fold Kronecker product (chosen by the user) for each quantum density and then summing the n-fold quantum densities and deviding by the number of rows (samples/observations) to get the quantum centroid for each subset or batch, for X' with binary class 0. The algorithm also calculates the terms in the quantum Helstrom observable according to the *class_wgt* option chosen by the user, for each subset or batch, for X' with binary class 0. Parallelization is performed over each of these subsets or batches, and the quantum centroid and quantum Helstrom observable terms for binary class 0 are obtained by summing the quantum centroid and quantum Helstrom observable terms for all the subsets or batches for binary class 0.
+10. For each subset or batch, the algorithm then calculates the terms in the Quantum Centroids and quantum Helstrom observable by combining these steps: first creating a counter to identify each subset or batch and then calculating the number of rows or samples in this subset or batch. The algorithm then determines the number of rows, which is equivalent to the number of columns of the density_sum, centroids and hels_obs_terms arrays (since they are symmetric matrices) and initializes these arrays. Next, the algorithm calculates the quantum densities for each row (sample/observation), then calculate the *n_copies* or the n-fold Kronecker product (chosen by the user) for each quantum density and then summing the n-fold quantum densities and deviding by the number of rows (samples/observations) to get the quantum centroid for each subset or batch, for X' with binary class 0. The algorithm also calculates the terms in the quantum Helstrom observable according to the *class_wgt* option chosen by the user, for each subset or batch, for X' with binary class 0. Parallelization is performed over each of these subsets or batches, and the quantum centroid and quantum Helstrom observable terms for binary class 0 are obtained by summing the quantum centroid and quantum Helstrom observable terms for all the subsets or batches for binary class 0.
 
 11. Steps 9 and 10 are repeated for X' in the group with binary class 1, using parallelization.
 
