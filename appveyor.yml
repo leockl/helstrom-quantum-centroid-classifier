@@ -22,7 +22,7 @@ install:
 test_script:
   - mkdir for_test
   - cd for_test
-  - pytest -v --cov=hqc --pyargs hqc
+  - pytest -v --cov=hqc --pyargs HQC
 
 after_test:
   - cp .coverage %APPVEYOR_BUILD_FOLDER%
