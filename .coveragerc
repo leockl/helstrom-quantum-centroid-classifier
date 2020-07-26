@@ -3,7 +3,7 @@
 [run]
 branch = True
 source = hqc
-include = */hqc/*
+include = */HQC/*
 omit =
     */setup.py
 
