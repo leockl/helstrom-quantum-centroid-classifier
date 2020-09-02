@@ -24,7 +24,7 @@ This Python package includes the option to vary four hyperparameters which are u
 
 These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
 
-The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance. Parallelization is performed over the two classes and subsets or batches.
+The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance. Parallelization is performed over the two classes and subset splits or batches.
 
 It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets, in particular when the hyperparameter, *number of copies*, is increased. A summary of the performances of the different classifiers examined are shown in the table below:
 
@@ -47,7 +47,7 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 | 14   | LogisticRegression            | 36.40                    |
 | 15   | BernoulliNB                   | 17.40                    |
 
-Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets. HelstromQuantumCentroidn is the HQC classifier corresponding to the n *number of copies* taken for the quantum densities.
+* Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets. HelstromQuantumCentroidn is the HQC classifier corresponding to the n *number of copies* taken for the quantum densities.
 
 The HQC classifier is a **_true probabilistic_** classifier, ie. a classifier which gives the class membership probability estimates for each sample without having to use any scaling methods. This means that the probability estimates (from `predict_proba`) are consistent with the scores (from `predict`).
 
