@@ -32,7 +32,7 @@ This Python package includes the option to vary four hyperparameters which are u
 
 These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
 
-The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance. Parallelization is performed over the two classes and subsets or batches.
+The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance. Parallelization is performed over the two classes and subset splits or batches.
 
 .. toctree::
    :maxdepth: 3
