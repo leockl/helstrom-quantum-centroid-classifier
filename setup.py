@@ -4,10 +4,10 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="hqc", # Replace with your own username
-    version="0.1.3",
+    name="hqc",
+    version="0.1.4",
     author="Leo Chow, Giuseppe Sergioli, Roberto Giuntini.",
-    author_email="leo_ckl@hotmail.com",
+    author_email="leo.chow11@gmail.com",
     description="A package for the Helstrom Quantum Centroid classifier",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,5 +20,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    install_requires=['numpy', 'scipy', 'scikit-learn', 'joblib']
 )
 
