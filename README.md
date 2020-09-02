@@ -47,7 +47,7 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 | 14   | LogisticRegression            | 36.40                    |
 | 15   | BernoulliNB                   | 17.40                    |
 
-* Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets. HelstromQuantumCentroidn is the HQC classifier corresponding to the n *number of copies* taken for the quantum densities.
+*Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets. HelstromQuantumCentroidn is the HQC classifier corresponding to the n *number of copies* taken for the quantum densities.
 
 The HQC classifier is a **_true probabilistic_** classifier, ie. a classifier which gives the class membership probability estimates for each sample without having to use any scaling methods. This means that the probability estimates (from `predict_proba`) are consistent with the scores (from `predict`).
 
