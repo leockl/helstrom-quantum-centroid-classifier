@@ -35,7 +35,7 @@ class HQC(BaseEstimator, ClassifierMixin):
     n_splits : int, default = 1
         The number of subset splits performed on the input dataset row-wise and on the number 
         of eigenvalues/eigenvectors of the Quantum Helstrom observable for optimal speed 
-        performance. If 1 is given, no splits are used. For optimal speed, recommend using 
+        performance. If 1 is given, no splits are performed. For optimal speed, recommend using 
         n_splits = int(numpy.ceil(number of CPU cores used/2)). If memory blow-out occurs, 
         reduce n_splits.
     
@@ -43,11 +43,11 @@ class HQC(BaseEstimator, ClassifierMixin):
     ----------
     classes_ : ndarray, shape (2,)
         Sorted binary classes.
-    centroids_ : ndarray, shape (2, n_features + 1, n_features + 1)
+    centroids_ : ndarray, shape (2, (n_features + 1)**n_copies, (n_features + 1)**n_copies)
         Quantum Centroids for class with index 0 and 1 respectively.
-    hels_obs_ : ndarray, shape (n_features + 1, n_features + 1)
+    hels_obs_ : ndarray, shape ((n_features + 1)**n_copies, (n_features + 1)**n_copies)
         Quantum Helstrom observable.
-    proj_sums_ : tuple, shape (2, n_features + 1, n_features + 1)
+    proj_sums_ : tuple, shape (2, (n_features + 1)**n_copies, (n_features + 1)**n_copies)
         Sum of the projectors of the Quantum Helstrom observable's eigenvectors, which has
         corresponding positive and negative eigenvalues respectively.
     hels_bound_ : float
@@ -62,15 +62,15 @@ class HQC(BaseEstimator, ClassifierMixin):
     
     # Initialize model hyperparameters
     def __init__(self, 
-                 rescale = 1, 
+                 rescale = 1,
+                 encoding = 'amplit',
                  n_copies = 1, 
-                 encoding = 'amplit', 
                  class_wgt = 'equi', 
                  n_jobs = None, 
                  n_splits = 1):
         self.rescale = rescale
-        self.n_copies = n_copies
         self.encoding = encoding
+        self.n_copies = n_copies
         self.class_wgt = class_wgt
         self.n_jobs = n_jobs
         self.n_splits = n_splits
@@ -103,6 +103,10 @@ class HQC(BaseEstimator, ClassifierMixin):
         # Store binary classes and encode y into binary class indexes 0 and 1
         self.classes_, y_class_index = np.unique(y, return_inverse = True)
         
+        # Raise error if there are more than 2 classes
+        if len(self.classes_) > 2:
+            raise ValueError('only 2 classes are supported')
+        
         # Cast X to float to ensure all following calculations below are done in float  
         # rather than integer
         X = X.astype(float)
@@ -121,13 +125,13 @@ class HQC(BaseEstimator, ClassifierMixin):
         
         # Calculate X' using amplitude or inverse of the standard stereographic projection 
         # encoding method
-        if self.encoding not in ['amplit', 'stereo']:
-            raise ValueError('encoding should be "amplit" or "stereo"')
-        elif self.encoding == 'amplit':
+        if self.encoding == 'amplit':
             X_prime = normalize(np.concatenate((X, np.ones(m).reshape(-1, 1)), axis = 1))
-        else:
+        elif self.encoding == 'stereo':
             X_prime = (1 / (X_sq_sum + 1)).reshape(-1, 1) \
                       *(np.concatenate((2*X, (X_sq_sum - 1).reshape(-1, 1)), axis = 1))
+        else:
+            raise ValueError('encoding should be "amplit" or "stereo"')
             
         # Function to calculate terms in the Quantum Centroids and quantum Helstrom 
         # observable for each class
@@ -184,12 +188,12 @@ class HQC(BaseEstimator, ClassifierMixin):
                         centroid = 0
                     
                     # Calculate terms in the quantum Helstrom observable
-                    if self.class_wgt not in ['equi', 'weighted']:
-                        raise ValueError('class_wgt should be "equi" or "weighted"')
-                    elif self.class_wgt == 'equi':
+                    if self.class_wgt == 'equi':
                         hels_obs_terms = 0.5*centroid
+                    elif self.class_wgt == 'weighted':
+                        hels_obs_terms = (1 / m)*density_sum
                     else:
-                        hels_obs_terms = (1 / m)*density_sum                      
+                        raise ValueError('class_wgt should be "equi" or "weighted"')                    
                 return m_class_split, centroid, hels_obs_terms        
             return np.sum(Parallel(n_jobs = self.n_jobs) \
                          (delayed(X_prime_class_split_func)(j) for j in range(self.n_splits)), axis = 0)
@@ -250,7 +254,7 @@ class HQC(BaseEstimator, ClassifierMixin):
         # Calculate sum of the projectors corresponding to positive and negative eigenvalues
         # respectively
         self.proj_sums_ = Parallel(n_jobs = self.n_jobs) \
-                         (delayed(sum_proj_func)(i) for i in range(2))    
+                          (delayed(sum_proj_func)(i) for i in range(2))    
                        
         # Calculate Helstrom bound
         self.hels_bound_ = (centroids_terms[0, 0] / m)*np.einsum('ij,ji->', self.centroids_[0], 
@@ -302,13 +306,13 @@ class HQC(BaseEstimator, ClassifierMixin):
 
         # Calculate X' using amplitude or inverse of the standard stereographic projection 
         # encoding method
-        if self.encoding not in ['amplit', 'stereo']:
-            raise ValueError('encoding should be "amplit" or "stereo"')
-        elif self.encoding == 'amplit':
+        if self.encoding == 'amplit':
             X_prime = normalize(np.concatenate((X, np.ones(m).reshape(-1, 1)), axis = 1))
-        else:
+        elif self.encoding == 'stereo':
             X_prime = (1 / (X_sq_sum + 1)).reshape(-1, 1) \
                       *(np.concatenate((2*X, (X_sq_sum - 1).reshape(-1, 1)), axis = 1))
+        else:
+            raise ValueError('encoding should be "amplit" or "stereo"')
                
         # Function to calculate trace values for each class
         def trace_func(i):
