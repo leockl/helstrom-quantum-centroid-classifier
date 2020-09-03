@@ -28,7 +28,7 @@ The package also includes an option for parallel computing using Joblib and an o
 
 The HQC classifier has the characteristics of a **_true probabilistic high performing_** classifier.
 
-The HQC classifier is a **_true probabilistic_** classifier, ie. a classifier which gives the class membership probability estimates for each sample without having to use any scaling methods. This means that the probability estimates (from `predict_proba`) are consistent with the scores (from `predict`).
+The HQC classifier is a **_true probabilistic_** classifier, ie. a classifier which gives the class membership probability estimates for each sample, without having to use any scaling methods. This means that the probability estimates (from `predict_proba`) are consistent with the scores (from `predict`).
 
 It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.org/10.1371/journal.pone.0216224) that the HQC classifier, on average, **_outperforms_** a variety of commonly used classifiers over 14 real-world and artificial datasets, in particular when the hyperparameter, *number of copies*, is increased. A summary of the performances of the different classifiers examined are shown in the table below:
 
