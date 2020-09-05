@@ -22,8 +22,6 @@ This Python package includes the option to vary four hyperparameters which are u
 * There is an option to choose the number of copies to take for the quantum densities.
 * There are two options to assign class weights to the quantum Helstrom observable terms: *equiprobable* or *weighted*.
 
-These hyperparameters are used in combination together to hypertune and optimize the accuracy of the HQC classifier to a given dataset.
-
 The package also includes an option for parallel computing using Joblib and an option to split datasets into subsets or batches for optimal speed performance. Parallelization is performed over the two classes and subset splits or batches.
 
 The HQC classifier has the characteristics of a **_true probabilistic high performing_** classifier.
