@@ -50,13 +50,13 @@ It is shown in [the paper by Sergioli G, Giuntini R and Freytes H](https://doi.o
 
 *Average success rate is the average number of datasets where the specified classifier outperforms the other classifiers over 14 real-world and artificial datasets. HelstromQuantumCentroidn is the HQC classifier corresponding to the n *number of copies* taken for the quantum densities.
 
-## Source Code
-The Python package's source code for the HQC classifier is available here: 
-https://github.com/leockl/helstrom-quantum-centroid-classifier/blob/master/hqc/hqc.py
-
 ## Documentation
 The documentation, including how to install the Python package, how to use the Python package and how the HQC classifier algorithm works, are available here: 
 https://helstrom-quantum-centroid-classifier.readthedocs.io/en/latest/
+
+## Source Code
+The Python package's source code for the HQC classifier is available here: 
+https://github.com/leockl/helstrom-quantum-centroid-classifier/blob/master/hqc/hqc.py
 
 ## License
 This Python package is licensed under the BSD 3-Clause License, available here: 
