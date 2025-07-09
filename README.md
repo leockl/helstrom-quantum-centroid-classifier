@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/leockl/helstrom-quantum-centroid-classifier.svg?branch=master)](https://travis-ci.com/leockl/helstrom-quantum-centroid-classifier)
 [![Build status](https://ci.appveyor.com/api/projects/status/7lmgxf21o6atqs25?svg=true)](https://ci.appveyor.com/project/leockl/helstrom-quantum-centroid-classifier)
 [![CircleCI](https://circleci.com/gh/leockl/helstrom-quantum-centroid-classifier.svg?style=svg)](https://circleci.com/gh/leockl/helstrom-quantum-centroid-classifier)
 [![Documentation Status](https://readthedocs.org/projects/helstrom-quantum-centroid-classifier/badge/?version=latest)](https://helstrom-quantum-centroid-classifier.readthedocs.io/en/latest/?badge=latest)
