@@ -1,6 +1,9 @@
-requirements_file: requirements.txt
+version: 2
+
 python:
+  version: 3.10
+  install:
+    - requirements: requirements.txt
   pip_install: true
   extra_requirements:
-#     - tests
     - docs
